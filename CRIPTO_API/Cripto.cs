@@ -17,6 +17,7 @@ namespace CRIPTO_API
             UTF8Encoding UTF8 = new UTF8Encoding();
             MD5CryptoServiceProvider Provedor = new MD5CryptoServiceProvider();
             byte[] TDESKey = Provedor.ComputeHash(UTF8.GetBytes(chave));
+
             TripleDESCryptoServiceProvider TDESAlgoritmo = new TripleDESCryptoServiceProvider();
             TDESAlgoritmo.Key = TDESKey;
             TDESAlgoritmo.Mode = CipherMode.ECB;
@@ -35,6 +36,31 @@ namespace CRIPTO_API
             }
 
             return Convert.ToBase64String(Results);
+        }
+        public static string Decodificar(string texto)
+        {
+            byte[] Results;
+            UTF8Encoding UTF8 = new UTF8Encoding();
+            MD5CryptoServiceProvider Provedor = new MD5CryptoServiceProvider();
+            byte[] TDESKey = Provedor.ComputeHash(UTF8.GetBytes(chave));
+
+            TripleDESCryptoServiceProvider TDESAlgoritmo = new TripleDESCryptoServiceProvider();
+            TDESAlgoritmo.Key = TDESKey;
+            TDESAlgoritmo.Mode = CipherMode.ECB;
+            TDESAlgoritmo.Padding = PaddingMode.PKCS7;
+            byte[] DataToDecrepty = Convert.FromBase64String(texto);
+            try
+            {
+                ICryptoTransform Decryptor = TDESAlgoritmo.CreateDecryptor();
+                Results = Decryptor.TransformFinalBlock(DataToDecrepty, 0, DataToDecrepty.Length);
+            }
+            finally
+            {
+                TDESAlgoritmo.Clear();
+                Provedor.Clear();
+            }
+
+            return UTF8.GetString(Results);
         }
     }
 }

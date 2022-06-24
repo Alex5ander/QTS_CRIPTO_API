@@ -11,14 +11,18 @@ namespace TESTE_CRIPTO
     {
         static void Main(string[] args)
         {
-           
-
-            
+            Console.Write("Digite o texto a codificar: ");
             string input = Console.ReadLine();
-            string d = Cripto.Codificar(input);
-            Console.Write(d);
+            string cripto = Cripto.Codificar(input);
+            Console.WriteLine(cripto);
+            Console.WriteLine(Cripto.Decodificar(cripto));
 
-            Console.ReadKey();
+
+            ConsoleKey c = ConsoleKey.D0;
+            while(c != ConsoleKey.Escape) {
+                c = Console.ReadKey().Key;
+            }
+       
         }
     }
 }
